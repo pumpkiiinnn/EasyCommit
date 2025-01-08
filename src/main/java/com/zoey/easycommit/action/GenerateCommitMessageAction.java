@@ -2,7 +2,6 @@ package com.zoey.easycommit.action;
 
 import java.util.Collection;
 
-import com.intellij.openapi.vcs.CommitMessageI;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.icons.AllIcons;
@@ -12,10 +11,11 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.ui.CommitMessageProvider;
+import com.intellij.openapi.vcs.changes.ContentRevision;
 
 public class GenerateCommitMessageAction extends DumbAwareAction {
     private static final Logger LOG = Logger.getInstance(GenerateCommitMessageAction.class);
@@ -44,24 +44,53 @@ public class GenerateCommitMessageAction extends DumbAwareAction {
                 return;
             }
 
+            // 构建变更信息
+            StringBuilder commitMessage = new StringBuilder("Changes:\n\n");
+            for (Change change : changes) {
+                String filePath = change.getVirtualFile().getPath();
+                String changeType = getChangeType(change);
+                
+                commitMessage.append(changeType).append(": ").append(filePath).append("\n");
+                
+                // 获取具体的内容变更
+                if (change.getBeforeRevision() != null && change.getAfterRevision() != null) {
+                    String beforeContent = change.getBeforeRevision().getContent();
+                    String afterContent = change.getAfterRevision().getContent();
+                    if (beforeContent != null && afterContent != null) {
+                        commitMessage.append("Modified content:\n");
+                        commitMessage.append("Before: ").append(beforeContent.substring(0, Math.min(100, beforeContent.length()))).append("...\n");
+                        commitMessage.append("After: ").append(afterContent.substring(0, Math.min(100, afterContent.length()))).append("...\n");
+                    }
+                }
+                commitMessage.append("\n");
+            }
+
             // 尝试获取提交消息控件
             CommitMessageI commitPanel = e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL);
             if (commitPanel != null) {
-                String generatedMessage = "feat: temporary commit message";
-                commitPanel.setCommitMessage(generatedMessage);
+                commitPanel.setCommitMessage(commitMessage.toString());
                 LOG.warn("Message set successfully");
-                Messages.showInfoMessage(project, "Commit message generated successfully!", "Generate Commit Message");
+                // 暂时不需要弹窗提示
+//                Messages.showInfoMessage(project, "Commit message generated successfully!", "Generate Commit Message");
             } else {
                 LOG.error("Could not find commit panel");
-                Messages.showErrorDialog(project, 
-                    "Could not access commit message panel. Please make sure you're in the commit dialog.", 
-                    "Generate Commit Message");
+                Messages.showErrorDialog(project, "Could not access commit message panel. Please make sure you're in the commit dialog.", "Generate Commit Message");
             }
         } catch (Exception ex) {
             LOG.error("Error in actionPerformed", ex);
             Messages.showErrorDialog(project, 
                 "Error: " + ex.getMessage(), 
                 "Generate Commit Message Error");
+        }
+    }
+
+    private String getChangeType(Change change) {
+        if (change.getBeforeRevision() == null && change.getAfterRevision() != null) {
+            return "Added";
+        } else if (change.getBeforeRevision() != null && change.getAfterRevision() == null) {
+            return "Deleted";
+        } else {
+            return "Modified";
         }
     }
 
