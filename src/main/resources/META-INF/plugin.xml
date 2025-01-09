@@ -8,7 +8,7 @@
     <name>Easy Commit</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="pumpkiiinnnn@gmail.com" url="https://zoey.asia">ZoeyAsia</vendor>
+    <vendor email="pumpkiiinnnn@gmail.com" url="https://zoey.asia">Zoey.Asia</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -26,12 +26,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.zoey.easycommit.settings.EasyCommitSettings"/>
         <applicationConfigurable
                 parentId="tools"
                 instance="com.zoey.easycommit.settings.EasyCommitConfigurable"
                 id="com.zoey.easycommit.settings.EasyCommitConfigurable"
                 displayName="Easy Commit"/>
+        <applicationService
+                serviceImplementation="com.zoey.easycommit.settings.EasyCommitSettings"/>
     </extensions>
     <actions>
         <action id="GenerateCommitMessage" 

@@ -1,43 +1,53 @@
 package com.zoey.easycommit.settings;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.zoey.easycommit.service.ai.AIModelType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.Service;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-
 @State(
-        name = "com.zoey.easycommit.settings.EasyCommitSettings",
-        storages = @Storage("EasyCommitSettings.xml")
+    name = "com.zoey.easycommit.settings.EasyCommitSettings",
+    storages = @Storage("EasyCommitSettings.xml")
 )
-@Service
-public class EasyCommitSettings implements PersistentStateComponent<EasyCommitSettings> {
-    private String apiKey = "";
+public class EasyCommitSettings implements PersistentStateComponent<EasyCommitSettings.State> {
+    private State myState = new State();
+
+    public static class State {
+        public String apiKey = "";
+        public AIModelType selectedModel = AIModelType.DEEPSEEK;
+    }
 
     public static EasyCommitSettings getInstance() {
-        return ServiceManager.getService(EasyCommitSettings.class);
+        return ApplicationManager.getApplication().getService(EasyCommitSettings.class);
     }
 
     @Nullable
     @Override
-    public EasyCommitSettings getState() {
-        return this;
+    public State getState() {
+        return myState;
     }
 
     @Override
-    public void loadState(@NotNull EasyCommitSettings state) {
-        XmlSerializerUtil.copyBean(state, this);
+    public void loadState(@NotNull State state) {
+        myState = state;
     }
 
     public String getApiKey() {
-        return apiKey;
+        return myState.apiKey;
     }
 
     public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+        myState.apiKey = apiKey;
+    }
+
+    public AIModelType getSelectedModel() {
+        return myState.selectedModel;
+    }
+
+    public void setSelectedModel(AIModelType model) {
+        myState.selectedModel = model;
     }
 } 

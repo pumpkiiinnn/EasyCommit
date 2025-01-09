@@ -1,13 +1,13 @@
 package com.zoey.easycommit.settings;
 
-import javax.swing.JComponent;
-
-import org.jetbrains.annotations.Nls;
-
 import com.intellij.openapi.options.Configurable;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 public class EasyCommitConfigurable implements Configurable {
-    private EasyCommitSettingsPanel settingsPanel;
+    private EasyCommitSettingsPanel mySettingsPanel;
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
@@ -16,31 +16,34 @@ public class EasyCommitConfigurable implements Configurable {
     }
 
     @Override
+    public JComponent getPreferredFocusedComponent() {
+        return mySettingsPanel.getModelComboBox();
+    }
+
+    @Nullable
+    @Override
     public JComponent createComponent() {
-        settingsPanel = new EasyCommitSettingsPanel();
-        return settingsPanel.getMainPanel();
+        mySettingsPanel = new EasyCommitSettingsPanel();
+        return mySettingsPanel.getPanel();
     }
 
     @Override
     public boolean isModified() {
-        EasyCommitSettings settings = EasyCommitSettings.getInstance();
-        return !settingsPanel.getApiKey().equals(settings.getApiKey());
+        return mySettingsPanel.isModified(EasyCommitSettings.getInstance());
     }
 
     @Override
     public void apply() {
-        EasyCommitSettings settings = EasyCommitSettings.getInstance();
-        settings.setApiKey(settingsPanel.getApiKey());
+        mySettingsPanel.apply(EasyCommitSettings.getInstance());
     }
 
     @Override
     public void reset() {
-        EasyCommitSettings settings = EasyCommitSettings.getInstance();
-        settingsPanel.setApiKey(settings.getApiKey());
+        mySettingsPanel.reset(EasyCommitSettings.getInstance());
     }
 
     @Override
     public void disposeUIResources() {
-        settingsPanel = null;
+        mySettingsPanel = null;
     }
 } 
