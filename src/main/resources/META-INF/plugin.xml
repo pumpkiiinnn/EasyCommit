@@ -14,10 +14,24 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Helps you submit code easily.<br>
-    <em>most HTML tags may be used</em>
-  ]]></description>
-
+    🤖 EasyCommit - AI驱动的Git提交信息生成器<br>
+    <br>
+    一个智能的IntelliJ IDEA插件，帮助您轻松生成高质量的Git提交信息。<br>
+    <br>
+    <b>✨ 主要特性：</b><br>
+    🎯 利用AI技术自动分析代码变更<br>
+    ⚡️ 一键生成规范的提交信息<br>
+    🔍 支持多种文件类型的智能分析<br>
+    📝 自动识别代码的增删改<br>
+    💡 提供上下文相关的变更描述<br>
+    <br>
+    <b>🚀 使用方法：</b><br>
+    1. 在提交代码界面点击闪电⚡图标<br>
+    2. 插件会自动分析您的代码变更<br>
+    3. AI将生成符合规范的提交信息<br>
+    <br>
+    <em>✨ 让提交代码变得简单！</em>
+]]></description>
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>

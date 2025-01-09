@@ -5,10 +5,11 @@ plugins {
 }
 
 group = "com.zoey"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
+    maven("https://plugins.jetbrains.com/maven") // JetBrains 插件仓库
 }
 
 // Configure Gradle IntelliJ Plugin
@@ -31,8 +32,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("232")
-        untilBuild.set("242.*")
+        sinceBuild.set("223.0")
+        untilBuild.set("243.*")
     }
 
     signPlugin {
@@ -44,4 +45,16 @@ tasks {
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
+
+    jar {
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    }
+
+    buildPlugin {
+        dependsOn(jar) // 确保在打包插件之前先执行 jar 任务
+    }
+}
+
+dependencies {
+    implementation("io.github.java-diff-utils:java-diff-utils:4.12")
 }

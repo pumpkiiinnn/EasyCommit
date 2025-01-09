@@ -1,5 +1,7 @@
 package com.zoey.easycommit.service;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.intellij.openapi.diagnostic.Logger;
 import com.zoey.easycommit.service.ai.AIModelType;
 import com.zoey.easycommit.service.ai.AIProvider;
@@ -20,6 +22,18 @@ public class AICommitMessageService {
             throw new RuntimeException("AI provider is not properly configured. Please check your settings.");
         }
 
-        return provider.generateCommitMessage(changes);
+        String response = provider.generateCommitMessage(changes);
+        
+        // 清理响应中可能存在的语言标记
+        response = response.replaceAll("^\\s*```\\w*\\s*", "").replaceAll("\\s*```\\s*$", "");
+        
+        try {
+            // 解析JSON响应
+            JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
+            return jsonResponse.get("commit_message").getAsString();
+        } catch (Exception e) {
+            LOG.error("Error parsing AI response", e);
+            throw new RuntimeException("Failed to parse AI response: " + response, e);
+        }
     }
 } 
