@@ -16,9 +16,11 @@ import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vcs.changes.ContentRevision;
+import com.zoey.easycommit.service.AICommitMessageService;
 
 public class GenerateCommitMessageAction extends DumbAwareAction {
     private static final Logger LOG = Logger.getInstance(GenerateCommitMessageAction.class);
+    private final AICommitMessageService aiService = new AICommitMessageService();
 
     public GenerateCommitMessageAction() {
         super("AI Generate Commit Message", 
@@ -65,16 +67,13 @@ public class GenerateCommitMessageAction extends DumbAwareAction {
                 commitMessage.append("\n");
             }
 
+            String aiGeneratedMessage = aiService.generateCommitMessage(commitMessage.toString());
+            
             // 尝试获取提交消息控件
             CommitMessageI commitPanel = e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL);
             if (commitPanel != null) {
-                commitPanel.setCommitMessage(commitMessage.toString());
+                commitPanel.setCommitMessage(aiGeneratedMessage);
                 LOG.warn("Message set successfully");
-                // 暂时不需要弹窗提示
-//                Messages.showInfoMessage(project, "Commit message generated successfully!", "Generate Commit Message");
-            } else {
-                LOG.error("Could not find commit panel");
-                Messages.showErrorDialog(project, "Could not access commit message panel. Please make sure you're in the commit dialog.", "Generate Commit Message");
             }
         } catch (Exception ex) {
             LOG.error("Error in actionPerformed", ex);
