@@ -14,23 +14,23 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    🤖 EasyCommit - AI驱动的Git提交信息生成器<br>
-    <br>
-    一个智能的IntelliJ IDEA插件，帮助您轻松生成高质量的Git提交信息。<br>
-    <br>
-    <b>✨ 主要特性：</b><br>
-    🎯 利用AI技术自动分析代码变更<br>
-    ⚡️ 一键生成规范的提交信息<br>
-    🔍 支持多种文件类型的智能分析<br>
-    📝 自动识别代码的增删改<br>
-    💡 提供上下文相关的变更描述<br>
-    <br>
-    <b>🚀 使用方法：</b><br>
-    1. 在提交代码界面点击闪电⚡图标<br>
-    2. 插件会自动分析您的代码变更<br>
-    3. AI将生成符合规范的提交信息<br>
-    <br>
-    <em>✨ 让提交代码变得简单！</em>
+<h2>EasyCommit - AI-Powered Commit Message Generator</h2>
+
+<p>EasyCommit is an intelligent commit message generator that helps developers create meaningful and standardized commit messages automatically.</p>
+
+<h3>Key Features:</h3>
+<ul>
+    <li><b>AI-Powered Analysis:</b> Automatically analyzes your code changes</li>
+    <li><b>Smart Generation:</b> Creates appropriate commit messages based on changes</li>
+    <li><b>Standardized Format:</b> Maintains consistent commit message style</li>
+    <li><b>Easy Integration:</b> Seamlessly integrates with your IDE workflow</li>
+</ul>
+
+<h3>How It Works:</h3>
+<p>Simply make your changes, click the lightning bolt icon, and let EasyCommit generate a meaningful commit message for you. 
+The plugin uses advanced AI technology to understand your changes and create appropriate, context-aware commit messages.</p>
+
+<p><em>Improve your development efficiency and maintain better commit history with EasyCommit!</em></p>
 ]]></description>
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
