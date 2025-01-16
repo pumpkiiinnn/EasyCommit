@@ -86,7 +86,14 @@ public class GenerateCommitMessageAction extends DumbAwareAction {
                 break;
             }
 
-            String filePath = change.getVirtualFile().getPath();
+            String filePath;
+        if (change.getAfterRevision() != null) {
+            filePath = change.getAfterRevision().getFile().getPath();
+        } else if (change.getBeforeRevision() != null) {
+            filePath = change.getBeforeRevision().getFile().getPath();
+        } else {
+            filePath = "Unknown file path";
+        }
             String changeType = getChangeType(change);
             String fileExtension = getFileExtension(filePath);
 
