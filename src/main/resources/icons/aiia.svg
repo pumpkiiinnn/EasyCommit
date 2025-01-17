@@ -1,0 +1,12 @@
+<svg height="1em" style="flex:none;line-height:1" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg">
+    <title>ai-ia</title>
+    <g transform="translate(0,0)">
+        <path d="M4 18 L7 6 L10 18 M6 14 L8 14" fill="none" stroke="#1E88E5" stroke-width="1.5"/>
+        <line x1="11" y1="8" x2="11" y2="18" stroke="#FF5722" stroke-width="1.5"/>
+        <circle cx="11" cy="6" r="1" fill="#FF5722"/>
+        <line x1="12" y1="12" x2="14" y2="12" stroke="#FF5722" stroke-width="1.5"/>
+        <line x1="15" y1="8" x2="15" y2="18" stroke="#FF5722" stroke-width="1.5"/>
+        <circle cx="15" cy="6" r="1" fill="#FF5722"/>
+        <path d="M16 18 L19 6 L22 18 M17 14 L21 14" fill="none" stroke="#1E88E5" stroke-width="1.5"/>
+    </g>
+</svg>
