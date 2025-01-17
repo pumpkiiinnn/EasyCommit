@@ -6,6 +6,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPasswordField;
 import com.intellij.util.ui.FormBuilder;
 import com.zoey.easycommit.service.ai.AIModelType;
+import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,14 +26,32 @@ public class EasyCommitSettingsPanel {
         apiKeyField = new JBPasswordField();
         modelComboBox = new ComboBox<>(AIModelType.values());
 
-        // 设置下拉框显示名称
+        // 设置下拉框显示名称和图标
         modelComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
+                                                        int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof AIModelType) {
-                    setText(((AIModelType) value).getDisplayName());
+                    AIModelType model = (AIModelType) value;
+                    setText(model.getDisplayName());
+                    
+                    // 设置图标
+                    switch (model) {
+                        case OPENAI:
+                            setIcon(IconLoader.getIcon("/icons/openai.svg", getClass()));
+                            break;
+                        case CLAUDE:
+                            setIcon(IconLoader.getIcon("/icons/claude.svg", getClass()));
+                            break;
+                        case DEEPSEEK:
+                            setIcon(IconLoader.getIcon("/icons/deepseek.svg", getClass()));
+                            break;
+                        // 可以继续添加其他模型的图标
+                    }
+                    
+                    // 设置图标和文字之间的间距
+                    setIconTextGap(8);
                 }
                 return this;
             }
