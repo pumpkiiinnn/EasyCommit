@@ -17,16 +17,16 @@ public class AICommitMessageService {
         String apiKey = settings.getApiKey();
 
         AIProvider provider = AIProviderFactory.createProvider(modelType, apiKey);
-        
+
         if (!provider.isConfigured()) {
-            throw new RuntimeException("AI provider is not properly configured. Please check your settings.");
+            throw new RuntimeException("AI provider is not properly configured. Please check your settings. ('Settings/Preferences → Tools → Easy Commit')");
         }
 
         String response = provider.generateCommitMessage(changes);
-        
+
         // 清理响应中可能存在的语言标记
         response = response.replaceAll("^\\s*```\\w*\\s*", "").replaceAll("\\s*```\\s*$", "");
-        
+
         try {
             // 解析JSON响应
             JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();

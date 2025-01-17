@@ -3,7 +3,8 @@ package com.zoey.easycommit.service.ai;
 public enum AIModelType {
     DEEPSEEK("Deepseek"),
     OPENAI("OpenAI"),
-    CLAUDE("Claude");
+    CLAUDE("Claude"),
+    MYLLM("MyLLM");
 
     private final String displayName;
 

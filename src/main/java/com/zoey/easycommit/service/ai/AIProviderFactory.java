@@ -6,6 +6,7 @@ public class AIProviderFactory {
             case DEEPSEEK -> new DeepseekAIProvider(apiKey);
             case OPENAI -> new OpenAIProvider(apiKey);
             case CLAUDE -> new ClaudeAIProvider(apiKey);
+            default ->  new MyLLMProvider();
         };
     }
 } 

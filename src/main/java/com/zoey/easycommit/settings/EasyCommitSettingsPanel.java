@@ -1,18 +1,16 @@
 package com.zoey.easycommit.settings;
 
 import com.intellij.ide.BrowserUtil;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPasswordField;
 import com.intellij.util.ui.FormBuilder;
 import com.zoey.easycommit.service.ai.AIModelType;
-import com.intellij.openapi.ui.ComboBox;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Locale;
 
 public class EasyCommitSettingsPanel {
     private final JPanel myMainPanel;
@@ -31,7 +29,7 @@ public class EasyCommitSettingsPanel {
         modelComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                        int index, boolean isSelected, boolean cellHasFocus) {
+                                                          int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof AIModelType) {
                     setText(((AIModelType) value).getDisplayName());
@@ -47,8 +45,13 @@ public class EasyCommitSettingsPanel {
         JSeparator separator = new JSeparator();
         separator.setPreferredSize(new Dimension(1, 10));
 
-        boolean isChinese = Locale.getDefault().getLanguage().equals("zh");
+//        boolean isChinese = Locale.getDefault().getLanguage().equals("zh");
 
+        JPanel emojiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
+        // 将组件添加到水平面板
+        emojiPanel.add(useEmojiCheckBox);
+        emojiPanel.add(emojiLinkLabel);
 
         // 使用 FormBuilder 创建布局
         myMainPanel = FormBuilder.createFormBuilder()
@@ -56,34 +59,36 @@ public class EasyCommitSettingsPanel {
                 .addLabeledComponent(new JBLabel("API Key: "), apiKeyField)
                 .addComponent(separator)
                 .addSeparator()
-                .addLabeledComponent(new JBLabel(isChinese ? "语言：" : "Language: "), languageComboBox)
-                .addLabeledComponent(new JBLabel(isChinese ? "消息风格：" : "Message Style: "), styleComboBox)
-                .addComponent(useEmojiCheckBox)
-                .addComponent(emojiLinkLabel)
+                .addLabeledComponent(new JBLabel("Language: "), languageComboBox)
+                .addLabeledComponent(new JBLabel("Message Style: "), styleComboBox)
+                .addComponent(emojiPanel)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
 
     private void initializeNewComponents() {
-        boolean isChinese = Locale.getDefault().getLanguage().equals("zh");
-        
+//        boolean isChinese = Locale.getDefault().getLanguage().equals("zh");
+
         // 语言选择
         languageComboBox = new ComboBox<>();
         for (EasyCommitSettings.Language lang : EasyCommitSettings.Language.values()) {
             languageComboBox.addItem(lang.getDisplay());
         }
-        
+
         // 风格选择
         styleComboBox = new ComboBox<>();
         for (EasyCommitSettings.MessageStyle style : EasyCommitSettings.MessageStyle.values()) {
-            styleComboBox.addItem(style.getDisplay(isChinese));
+            styleComboBox.addItem(style.getDisplay(false));
         }
-        
+
+        // 创建水平面板用于放置 Emoji 相关组件
+        JPanel emojiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
         // Emoji 选择
-        useEmojiCheckBox = new JCheckBox(isChinese ? "使用 Emoji" : "Use Emoji");
-        
-        // Emoji 链接
-        emojiLinkLabel = new JLabel("<html><a href='https://gitmoji.dev'>Gitmoji Guide</a></html>");
+        useEmojiCheckBox = new JCheckBox("Use Emoji");
+
+        // Emoji 链接图标
+        emojiLinkLabel = new JLabel("<html><a href='https://gitmoji.dev'>Help with Gitmoji Guide</a></html>");
         emojiLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         emojiLinkLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -91,6 +96,10 @@ public class EasyCommitSettingsPanel {
                 BrowserUtil.browse("https://gitmoji.dev");
             }
         });
+
+        // 将组件添加到水平面板
+        emojiPanel.add(useEmojiCheckBox);
+        emojiPanel.add(emojiLinkLabel);
     }
 
     public JPanel getPanel() {

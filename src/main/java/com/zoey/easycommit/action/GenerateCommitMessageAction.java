@@ -22,9 +22,7 @@ import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeListManager;
-import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.zoey.easycommit.service.AICommitMessageService;
-import org.apache.commons.lang3.StringUtils;
 
 public class GenerateCommitMessageAction extends DumbAwareAction {
     private static final Logger LOG = Logger.getInstance(GenerateCommitMessageAction.class);
@@ -36,23 +34,21 @@ public class GenerateCommitMessageAction extends DumbAwareAction {
     );
 
     public GenerateCommitMessageAction() {
-        super("AI Generate Commit Message", 
+        super("Easy Commit",
               "Generate commit message using AI",
               AllIcons.Actions.Lightning);
     }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        LOG.warn("Action performed called");
-        
         Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-        LOG.warn("Project: " + project.getName());
+        LOG.info("Project: " + project.getName());
 
         try {
             // 获取当前的变更列表
             ChangeListManager changeListManager = ChangeListManager.getInstance(project);
             Collection<Change> changes = changeListManager.getDefaultChangeList().getChanges();
-            LOG.warn("Changes size: " + changes.size());
+            LOG.info("Changes size: " + changes.size());
 
             if (changes.isEmpty()) {
                 Messages.showWarningDialog(project, "No changes to commit", "Generate Commit Message");
