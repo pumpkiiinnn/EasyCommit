@@ -4,7 +4,7 @@ public enum AIModelType {
     DEEPSEEK("Deepseek"),
     OPENAI("OpenAI"),
     CLAUDE("Claude"),
-    MYLLM("MyLLM");
+    AI_IA("AI-IA");
 
     private final String displayName;
 

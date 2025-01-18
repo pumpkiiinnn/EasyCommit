@@ -2,11 +2,11 @@ package com.zoey.easycommit.settings;
 
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPasswordField;
 import com.intellij.util.ui.FormBuilder;
 import com.zoey.easycommit.service.ai.AIModelType;
-import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,12 +30,12 @@ public class EasyCommitSettingsPanel {
         modelComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                        int index, boolean isSelected, boolean cellHasFocus) {
+                                                          int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof AIModelType) {
                     AIModelType model = (AIModelType) value;
                     setText(model.getDisplayName());
-                    
+
                     // 设置图标
                     switch (model) {
                         case OPENAI:
@@ -47,9 +47,12 @@ public class EasyCommitSettingsPanel {
                         case DEEPSEEK:
                             setIcon(IconLoader.getIcon("/icons/deepseek.svg", getClass()));
                             break;
+                        case AI_IA:
+                            setIcon(IconLoader.getIcon("/icons/aiia.svg", getClass()));
+                            break;
                         // 可以继续添加其他模型的图标
                     }
-                    
+
                     // 设置图标和文字之间的间距
                     setIconTextGap(8);
                 }
@@ -135,10 +138,10 @@ public class EasyCommitSettingsPanel {
 
     public boolean isModified(EasyCommitSettings settings) {
         return !String.valueOf(apiKeyField.getPassword()).equals(settings.getApiKey()) ||
-                !modelComboBox.getSelectedItem().equals(settings.getSelectedModel()) ||
-                !settings.getLanguage().equals(getSelectedLanguageCode()) ||
-                !settings.getMessageStyle().equals(getSelectedStyleCode()) ||
-                settings.isUseEmoji() != useEmojiCheckBox.isSelected();
+               !modelComboBox.getSelectedItem().equals(settings.getSelectedModel()) ||
+               !settings.getLanguage().equals(getSelectedLanguageCode()) ||
+               !settings.getMessageStyle().equals(getSelectedStyleCode()) ||
+               settings.isUseEmoji() != useEmojiCheckBox.isSelected();
     }
 
     public void apply(EasyCommitSettings settings) {
