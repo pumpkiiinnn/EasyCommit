@@ -51,9 +51,9 @@ The plugin uses advanced AI technology to understand your changes and create app
     <actions>
         <action id="GenerateCommitMessage" 
                 class="com.zoey.easycommit.action.GenerateCommitMessageAction"
-                text="AI Generate Commit Message" 
-                description="Generate commit message using AI"
-                icon="AllIcons.Actions.Lightning">
+                text="Generate Commit Message"
+                description="Generate commit message using Easy Commit"
+                icon="/icons/generate.svg">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
             <add-to-group group-id="ChangesViewToolbar" anchor="last"/>
         </action>
