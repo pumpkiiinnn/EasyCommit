@@ -20,7 +20,7 @@ public class EasyCommitSettings implements PersistentStateComponent<EasyCommitSe
 
     public static class State {
         public String apiKey = "";
-        public AIModelType selectedModel = AIModelType.DEEPSEEK;
+        public AIModelType selectedModel = AIModelType.AI_IA;
     }
 
     public static EasyCommitSettings getInstance() {
