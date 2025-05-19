@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
+import com.zoey.easycommit.settings.EasyCommitSettings;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -23,7 +25,7 @@ public class ClaudeAIProvider implements AIProvider {
     }
 
     @Override
-    public String generateCommitMessage(String changes) {
+    public String generateCommitMessage(String changes, EasyCommitSettings settings) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(API_URL);
             request.setHeader("Content-Type", "application/json");
@@ -31,7 +33,7 @@ public class ClaudeAIProvider implements AIProvider {
 
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("model", "gpt-3.5-turbo");
-            
+
             JsonArray messages = createMessages(changes);
             requestBody.add("messages", messages);
 
@@ -58,17 +60,17 @@ public class ClaudeAIProvider implements AIProvider {
 
     private JsonArray createMessages(String changes) {
         JsonArray messages = new JsonArray();
-        
+
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
         systemMessage.addProperty("content", AIPrompts.SYSTEM_PROMPT);
-        
+
         JsonObject userMessage = new JsonObject();
         userMessage.addProperty("role", "user");
-        userMessage.addProperty("content", "Based on the following changes, generate a commit message:\n" + changes);
-        
+        userMessage.addProperty("content", "基于以下变更生成提交信息：\n" + changes);
+
         messages.add(systemMessage);
         messages.add(userMessage);
         return messages;
     }
-} 
+}
