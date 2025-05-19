@@ -18,11 +18,11 @@ public class AICommitMessageService {
 
         AIProvider provider = AIProviderFactory.createProvider(modelType, apiKey);
 
-        if (!provider.isConfigured()) {
+        if (modelType!=AIModelType.AI_IA && !provider.isConfigured()) {
             throw new RuntimeException("AI provider is not properly configured. Please check your settings. ('Settings/Preferences → Tools → Easy Commit')");
         }
 
-        String response = provider.generateCommitMessage(changes);
+        String response = provider.generateCommitMessage(changes, settings);
 
         // 清理响应中可能存在的语言标记
         response = response.replaceAll("^\\s*```\\w*\\s*", "").replaceAll("\\s*```\\s*$", "");
