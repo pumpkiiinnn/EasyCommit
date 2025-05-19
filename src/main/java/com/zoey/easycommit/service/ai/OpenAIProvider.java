@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
+import com.zoey.easycommit.settings.EasyCommitSettings;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -23,7 +25,7 @@ public class OpenAIProvider implements AIProvider {
     }
 
     @Override
-    public String generateCommitMessage(String changes) {
+    public String generateCommitMessage(String changes, EasyCommitSettings settings) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(API_URL);
             request.setHeader("Content-Type", "application/json");
@@ -32,7 +34,7 @@ public class OpenAIProvider implements AIProvider {
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("model", "gpt-3.5-turbo");
             
-            JsonArray messages = createMessages(changes);
+            JsonArray messages = createMessages(changes, settings);
             requestBody.add("messages", messages);
 
             request.setEntity(new StringEntity(requestBody.toString(), StandardCharsets.UTF_8));
@@ -56,12 +58,24 @@ public class OpenAIProvider implements AIProvider {
         return apiKey != null && !apiKey.isEmpty();
     }
 
-    private JsonArray createMessages(String changes) {
+    private JsonArray createMessages(String changes, EasyCommitSettings settings) {
         JsonArray messages = new JsonArray();
         
+        String messageStyle = settings.getMessageStyle();
+        String lengthLimit;
+        
+        // 根据messageStyle设置不同的字符长度限制
+        if ("professional".equals(messageStyle)) {
+            lengthLimit = "300";
+        } else {
+            lengthLimit = "50";
+        }
+
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
-        systemMessage.addProperty("content", AIPrompts.SYSTEM_PROMPT);
+        systemMessage.addProperty("content", AIPrompts.SYSTEM_PROMPT
+                .replace("<language>", settings.getLanguage())
+                .replace("<length>", lengthLimit));
         
         JsonObject userMessage = new JsonObject();
         userMessage.addProperty("role", "user");

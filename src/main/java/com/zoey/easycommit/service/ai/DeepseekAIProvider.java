@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
+import com.zoey.easycommit.settings.EasyCommitSettings;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -24,7 +26,7 @@ public class DeepseekAIProvider implements AIProvider {
     }
 
     @Override
-    public String generateCommitMessage(String changes) {
+    public String generateCommitMessage(String changes, EasyCommitSettings settings) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(API_URL);
             request.setHeader("Content-Type", "application/json");
